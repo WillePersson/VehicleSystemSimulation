@@ -1,0 +1,56 @@
+﻿@rendermode InteractiveServer
+@inject VSSI.UI.Services.SimulationService SimulationService
+
+<h3>Vehicle Controls</h3>
+<div class="mb-3">
+    <label for="throttleRange" class="form-label">Throttle: @ThrottleValue%</label>
+    <input type="range" class="form-range" id="throttleRange" min="0" max="100" @bind="ThrottleValue" @bind:event="oninput" />
+</div>
+
+@code {
+    private double ThrottleValue
+    {
+        get => _throttleValue;
+        set
+        {
+            _throttleValue = value;
+            SimulationService.SetThrottle(_throttleValue);
+        }
+    }
+    private double _throttleValue = 0;
+
+    protected override void OnInitialized()
+    {
+        SimulationService.SetThrottle(ThrottleValue);
+    }
+
+    private void OnThrottleChanged(ChangeEventArgs e)
+    {
+        if (double.TryParse(e.Value?.ToString(), out var value))
+        {
+            ThrottleValue = value;
+            SimulationService.SetThrottle(ThrottleValue);
+        }
+    }
+
+    private void ThrottleChangedHandler()
+    {
+        SimulationService.SetThrottle(ThrottleValue);
+    }
+
+    private async Task HandleThrottleInput(ChangeEventArgs e)
+    {
+        ThrottleChangedHandler();
+    }
+
+    private void OnInput(ChangeEventArgs e)
+    {
+        SimulationService.SetThrottle(ThrottleValue);
+    }
+
+    private void OnChange(ChangeEventArgs e)
+    {
+        SimulationService.SetThrottle(ThrottleValue);
+    }
+}
+

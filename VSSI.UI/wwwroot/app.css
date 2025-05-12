@@ -1,0 +1,34 @@
+.dashboard-container {
+    padding: 20px;
+    background-color: #111;
+}
+
+.message-popup-area {
+    height: 50px;
+    background-color: #222;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.mini-map-overlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 200px;
+    height: 150px;
+    background-color: #222;
+    border: 1px solid #555;
+    padding: 5px;
+    z-index: 10;
+    border-radius: 5px;
+}
+.mini-map-container {
+    font-size: 0.9rem;
+}
+
+.mini-map-box {
+    background-color: #1e1e1e;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #555;
+}

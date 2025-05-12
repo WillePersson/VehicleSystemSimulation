@@ -1,0 +1,98 @@
+﻿@page "/"
+@inject StartupManager StartupManager
+@using VSSI.Core.Enums
+@using VSSI.Core.Models
+@using VSSI.UI.Components
+@using VSSI.UI.Services
+
+<div class="dashboard-container text-light">
+
+    <!-- Top Message/Popup Area -->
+    <div class="message-popup-area mb-3">
+        <MessagePopup />
+    </div>
+
+    <div class="row">
+        <!-- Left Control Panel -->
+        <div class="col-md-4">
+            <div class="card bg-dark text-light mb-3">
+                <div class="card-header">System Status</div>
+                <div class="card-body">
+                    <p>@Status.Message</p>
+                </div>
+            </div>
+
+            @if (Status.BootState == BootState.Off || Status.BootState == BootState.Fault)
+            {
+                <div class="mb-3">
+                    <label for="codeInput" class="form-label">Startup Code:</label>
+                    <input id="codeInput" type="text" class="form-control" @bind="StartupCode" />
+                    <button class="btn btn-primary mt-2" @onclick="StartSystem">Start System</button>
+                </div>
+            }
+            else
+            {
+                <div class="mb-3">
+                    <button class="btn btn-success me-2" @onclick="StartEngine" disabled="@(!IsReady)">Start Engine</button>
+                    <button class="btn btn-warning" @onclick="RestartSystem">Restart</button>
+                </div>
+            }
+
+            @if (Status.EngineStarted)
+            {
+                <VehicleControls />
+            }
+        </div>
+
+        <!-- Main View Area (2/3 width) -->
+        <div class="col-md-8 position-relative">
+            <!-- Simulated Scope View -->
+            <SignalViewer />
+
+            <!-- Mini Map in Top-Right Corner -->
+            <div class="mini-map-overlay">
+                <MiniMap />
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string StartupCode = "";
+    private SystemStatus Status = new();
+
+    protected override void OnInitialized()
+    {
+        Status = StartupManager.CurrentStatus;
+        StartupManager.StatusChanged += OnStatusChanged;
+    }
+
+    private async Task StartSystem()
+    {
+        await StartupManager.StartSystemAsync(StartupCode);
+    }
+
+    private void StartEngine()
+    {
+        StartupManager.StartEngine();
+    }
+
+    private void RestartSystem()
+    {
+        StartupCode = "";
+        StartupManager.ShutdownSystem();
+    }
+
+    private void OnStatusChanged(SystemStatus status)
+    {
+        Status = status;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private bool IsReady => Status.BootState == BootState.Ready;
+
+    public void Dispose()
+    {
+        StartupManager.StatusChanged -= OnStatusChanged;
+    }
+}

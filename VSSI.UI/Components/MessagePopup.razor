@@ -1,0 +1,31 @@
+﻿@using VSSI.UI.Services
+@inject IMessageService MessageService
+
+@if (!string.IsNullOrWhiteSpace(CurrentMessage))
+{
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        @CurrentMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                @onclick="() => CurrentMessage = null"></button>
+    </div>
+}
+
+@code {
+    private string? CurrentMessage;
+
+    protected override void OnInitialized()
+    {
+        MessageService.OnMessage += ShowMessage;
+    }
+
+    private void ShowMessage(string message)
+    {
+        CurrentMessage = message;
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        MessageService.OnMessage -= ShowMessage;
+    }
+}
