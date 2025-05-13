@@ -1,6 +1,6 @@
 ﻿// StartupManager.cs
 using VSSI.Core.Enums;
-using VSSI.Core.Models;
+using VSSI.Core.Models.System;
 
 namespace VSSI.UI.Services
 {

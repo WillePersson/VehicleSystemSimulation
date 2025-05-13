@@ -1,0 +1,104 @@
+﻿@rendermode InteractiveServer
+@using VSSI.Core.Enums
+@using VSSI.Core.Models.System
+@using VSSI.UI.Services
+@inherits ComponentBase
+@inject StartupManager StartupManager
+@inject SimulationService SimulationService
+
+<div class="sidebar-panel p-3 text-light bg-dark" @attributes="AdditionalAttributes">
+    <h6 class="fw-bold">System Controls</h6>
+
+    @if (Status.BootState == BootState.Off || Status.BootState == BootState.Fault)
+    {
+        <div class="mb-3">
+            <label class="form-label">Startup Code:</label>
+            <input class="form-control form-control-sm" type="text" @bind="StartupCode" />
+            <button class="btn btn-primary btn-sm mt-2" @onclick="StartSystem">Start System</button>
+        </div>
+    }
+    else
+    {
+        <div class="mb-2 small">
+            <span>Status:</span> <strong>@Status.Message</strong><br />
+            <span>Engine:</span> <span class="status-dot @(Status.EngineStarted ? "online" : "offline")"></span><strong>@Status.Message</strong>
+        </div>
+
+        <div class="d-flex gap-2 mb-3">
+            <button class="btn btn-success btn-sm" @onclick="StartEngine" disabled="@(!IsReady)">Start Engine</button>
+            <button class="btn btn-warning btn-sm" @onclick="RestartSystem">Restart</button>
+        </div>
+    }
+
+    @if (Status.EngineStarted)
+    {
+        <VehicleControls />
+    }
+
+    <div class="section-divider"></div>
+
+    <div class="small text-secondary">
+        <p class="mb-1"><strong>Diagnostics</strong></p>
+        <p class="mb-1">Boot Time: @BootTime?.ToString("HH:mm:ss")</p>
+        <p>CPU Load: @CpuLoad%</p>
+        <p>Memory: @MemoryUsed MB</p>
+        <p class="mb-1">Uptime: @Uptime</p>
+        <p class="mb-1">System Version: v1.0.0</p>
+    </div>
+</div>
+
+@code {
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+    private string StartupCode = "";
+    private SystemStatus Status = new();
+    private DateTime? BootTime;
+    private int CpuLoad => new Random().Next(20, 80);
+    private int MemoryUsed => new Random().Next(100, 500);
+
+    protected override void OnInitialized()
+    {
+        Status = StartupManager.CurrentStatus;
+        StartupManager.StatusChanged += OnStatusChanged;
+    }
+
+    private async Task StartSystem()
+    {
+        BootTime = DateTime.Now;
+        await StartupManager.StartSystemAsync(StartupCode);
+    }
+
+    private void StartEngine()
+    {
+        StartupManager.StartEngine();
+    }
+
+    private void RestartSystem()
+    {
+        StartupCode = "";
+        BootTime = null;
+        SimulationService.Stop();
+        StartupManager.ShutdownSystem();
+    }
+
+    private void OnStatusChanged(SystemStatus status)
+    {
+        Status = status;
+        InvokeAsync(StateHasChanged);
+
+        if (status.BootState == BootState.Ready)
+            SimulationService.Start();
+        else if (status.BootState == BootState.Off)
+            SimulationService.Stop();
+    }
+
+    private bool IsReady => Status.BootState == BootState.Ready;
+
+    private string Uptime =>
+        BootTime.HasValue ? (DateTime.Now - BootTime.Value).ToString(@"hh\:mm\:ss") : "—";
+
+    public void Dispose()
+    {
+        StartupManager.StatusChanged -= OnStatusChanged;
+    }
+}

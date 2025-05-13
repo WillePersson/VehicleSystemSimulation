@@ -1,0 +1,43 @@
+﻿@if (_isVisible)
+{
+    <div class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>@Signal?.Name Details</h5>
+                <button class="btn-close" @onclick="Close"></button>
+            </div>
+            <div class="modal-body">
+                @if (Signal != null)
+                {
+                    <p><strong>ID:</strong> @Signal.Id</p>
+                    <p><strong>Value:</strong> @Signal.Value @Signal.Unit</p>
+                    <p><strong>Status:</strong> @Signal.Status</p>
+                    <p><strong>Warning Threshold:</strong> @Signal.WarningThreshold</p>
+                    <p><strong>Critical Threshold:</strong> @Signal.CriticalThreshold</p>
+                    <p><strong>Timestamp:</strong> @Signal.Timestamp.ToString("G")</p>
+                }
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" @onclick="Close">Close</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public Signal? Signal { get; set; }
+    private bool _isVisible;
+
+    public void Open(Signal signal)
+    {
+        Signal = signal;
+        _isVisible = true;
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        _isVisible = false;
+        Signal = null;
+    }
+}

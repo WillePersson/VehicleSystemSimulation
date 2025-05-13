@@ -4,7 +4,9 @@
 @if (!string.IsNullOrWhiteSpace(CurrentMessage))
 {
     <div class="alert alert-info alert-dismissible fade show" role="alert">
-        @CurrentMessage
+        <div class="alert alert-info">
+            <strong>@DateTime.Now.ToString("HH:mm:ss"):</strong> @CurrentMessage
+        </div>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
                 @onclick="() => CurrentMessage = null"></button>
     </div>

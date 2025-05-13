@@ -1,9 +1,12 @@
 ﻿@inherits LayoutComponentBase
+@namespace VSSI.UI.Components.Layout
 
-@Body
+<div class="main-layout">
+    <header class="main-header">
+        <h1>🚗 Vehicle Simulation System</h1>
+    </header>
 
-<div id="blazor-error-ui" data-nosnippet>
-    An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
-    <span class="dismiss">🗙</span>
+    <main class="main-content">
+        @Body
+    </main>
 </div>

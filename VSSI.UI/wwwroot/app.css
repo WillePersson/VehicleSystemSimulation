@@ -1,27 +1,76 @@
-.dashboard-container {
-    padding: 20px;
-    background-color: #111;
-}
-
 .message-popup-area {
     height: 50px;
     background-color: #222;
     padding: 10px;
     border-radius: 5px;
 }
-
-.mini-map-overlay {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 200px;
-    height: 150px;
-    background-color: #222;
-    border: 1px solid #555;
-    padding: 5px;
-    z-index: 10;
-    border-radius: 5px;
+.main-content {
+    display: flex;
+    height: 100%;
 }
+
+.sidebar-scroll {
+    width: 300px;
+    background-color: #1c1c1c;
+    overflow-y: auto;
+    padding: 1rem;
+    color: white;
+}
+
+.main-panel {
+    padding: 1rem;
+    flex-grow: 1;
+    position: relative;
+}
+table {
+    background-color: #181818;
+    color: white;
+}
+
+.table-dark th {
+    background-color: #333;
+    color: #ddd;
+}
+
+.table tbody tr td {
+    background-color: #1e1e1e;
+}
+.table-warning {
+    background-color: rgba(255, 193, 7, 0.2);
+}
+
+.table-danger {
+    background-color: rgba(220, 53, 69, 0.2);
+}
+.status-dot {
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.dot-red {
+    background-color: #dc3545;
+}
+
+.dot-yellow {
+    background-color: #ffc107;
+}
+
+.dot-green {
+    background-color: #28a745;
+}
+
+
+.minimap-overlay {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 180px;
+    height: 180px;
+}
+
 .mini-map-container {
     font-size: 0.9rem;
 }
@@ -31,4 +80,75 @@
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #555;
+}
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #222;
+    color: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    width: 400px;
+}
+
+.modal-header, .modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-close {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+}
+.status-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-left: 6px;
+    border-radius: 50%;
+    background-color: gray;
+    animation: pulse 1s infinite ease-in-out;
+}
+
+.online {
+    background-color: limegreen;
+}
+
+.offline {
+    background-color: crimson;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+        opacity: 0.7;
+    }
+
+    50% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(0.95);
+        opacity: 0.7;
+    }
+}
+.section-divider {
+    border-top: 1px solid #555;
+    margin: 1rem 0;
 }

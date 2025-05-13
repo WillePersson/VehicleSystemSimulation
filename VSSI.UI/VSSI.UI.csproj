@@ -10,4 +10,8 @@
     <ProjectReference Include="..\VSSI.Core\VSSI.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components\Shared\" />
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,40 @@
+﻿@page "/"
+@inject StartupManager StartupManager
+@inject SimulationService SimulationService
+@using VSSI.Core.Enums
+@using VSSI.Core.Models
+@using VSSI.Core.Models.System
+@using VSSI.Core.Models.Vehicle
+@using VSSI.UI.Components.Dashboard
+@using VSSI.UI.Services
+
+<div class="dashboard-container">
+    <!-- Header -->
+    <HeaderBar />
+
+    <div class="main-content d-flex">
+        <!-- Scrollable Sidebar -->
+        <SidebarPanel class="sidebar-scroll" />
+
+        <!-- Main Panel -->
+        <div class="main-panel flex-grow-1 position-relative">
+            <SignalViewer />
+
+            <MessageLog />
+
+            <RadarMap class="minimap-overlay" />
+        </div>
+    </div>
+
+    <SignalDetailModal @ref="_detailModal" />
+</div>
+
+@code {
+    private SignalDetailModal? _detailModal;
+
+    private void ShowSignalDetails(Signal selectedSignal)
+    {
+        _detailModal?.Open(selectedSignal);
+    }
+}
+

@@ -1,0 +1,13 @@
+﻿@using VSSI.UI.Services
+@rendermode InteractiveServer
+@inject StartupManager StartupManager
+@inject SimulationService SimulationService
+
+<div class="main-content d-flex">
+    <SidebarPanel class="sidebar-scroll" />
+    <div class="main-panel flex-grow-1 position-relative">
+        <SignalViewer />
+        <MessagePopup />
+        <Minimap class="minimap-overlay" />
+    </div>
+</div>

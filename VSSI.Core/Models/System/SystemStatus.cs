@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VSSI.Core.Enums;
 
-namespace VSSI.Core.Models
+namespace VSSI.Core.Models.System
 {
     public class SystemStatus
     {
